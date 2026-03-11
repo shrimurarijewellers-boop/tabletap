@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TABLE TAP · smart QR for cafés</title>
+  <!-- Font Awesome, Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#faf8f5;
+      font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+      color:#1e1e2a;
+      line-height:1.4;
+    }
+    a { text-decoration:none; }
+    .container { max-width:1280px; margin:0 auto; padding:2rem 1.5rem 3rem; }
+    .navbar {
+      background:#ffffff; border-bottom:1px solid #efeae3;
+      padding:0.9rem 2rem; display:flex; align-items:center;
+      justify-content:space-between; flex-wrap:wrap; gap:1rem;
+    }
+    .logo {
+      display:flex; align-items:center; gap:0.75rem;
+      font-weight:700; font-size:1.8rem; letter-spacing:-0.02em; color:#2b2b36;
+    }
+    .logo span { color:#b48c5c; }
+    .nav-links { display:flex; gap:1.5rem; align-items:center; }
+    .nav-links a { color:#2b2b36; font-weight:500; transition:0.1s; }
+    .nav-links a:hover { color:#b48c5c; }
+    .nav-links .active-page { border-bottom:3px solid #b48c5c; padding-bottom:4px; }
+    .demo-btn {
+      background:#b48c5c; color:#fff; padding:0.5rem 1.4rem; border-radius:40px;
+      font-weight:600; font-size:0.95rem; box-shadow:0 4px 10px rgba(180,140,92,0.2);
+    }
+    .demo-btn:hover { background:#9f7748; }
+    .footer {
+      background:#eae3db; padding:1.8rem 2rem; text-align:center;
+      color:#3a3a48; font-size:0.9rem; border-top:2px solid #d6cbbc;
+    }
+    .feature-deep {
+      background:#ffffff; border-radius:2.5rem; padding:2.2rem 2rem;
+      box-shadow:0 12px 28px -10px rgba(0,0,0,0.05);
+      border:1px solid #f0eae2;
+      margin-bottom:2rem;
+    }
+    .feature-deep:hover { box-shadow:0 20px 32px -12px rgba(180,140,92,0.12); }
+    .feature-icon-large {
+      font-size:2.4rem; background:#efe6dc; width:70px; height:70px;
+      border-radius:30px; display:inline-flex; align-items:center; justify-content:center;
+      color:#b48c5c; margin-bottom:1.6rem;
+    }
+    .grid-2col {
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:2rem;
+    }
+    .stat-badge {
+      background:#e7dfd5; color:#2e2e3a; padding:0.2rem 1rem; border-radius:30px;
+      font-size:0.85rem; font-weight:600; display:inline-block; margin-right:0.5rem;
+    }
+    .quote {
+      font-style:italic; color:#5f5f70; border-left:5px solid #b48c5c; padding-left:1.5rem; margin:1.5rem 0;
+    }
+    .price-card {
+      background:#fff; border-radius:32px; flex:1 1 300px; max-width:360px;
+      box-shadow:0 18px 35px -8px rgba(0,0,0,0.08); padding:2rem 2rem 2.2rem;
+      border:1px solid #ece7e0;
+    }
+    /* form styling */
+    .form-card {
+      background:#fff; border-radius:40px; padding:2rem; box-shadow:0 25px 40px -20px rgba(0,0,0,0.15);
+      max-width:600px; margin:2rem auto;
+    }
+    input, textarea {
+      width:100%; padding:1rem; border:2px solid #e7ded5; border-radius:40px; 
+      font-size:1rem; margin-bottom:1.2rem; font-family:'Inter',sans-serif;
+    }
+    button {
+      background:#b48c5c; border:none; color:white; font-weight:700; padding:1rem; 
+      width:100%; border-radius:40px; font-size:1.2rem; cursor:pointer;
+      transition:background 0.2s;
+    }
+    button:hover { background:#9f7748; }
+    .feedback { font-size:0.95rem; margin-top:1rem; text-align:center; min-height:2rem; }
+    /* mobile number hint */
+    .input-hint { font-size:0.75rem; color:#7b7b8c; margin-top:-0.8rem; margin-bottom:1rem; text-align:left; padding-left:1rem; }
+  </style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<div class="navbar">
+  <div class="logo">
+    <i class="fas fa-utensils" style="font-size:2rem; color:#b48c5c;"></i>
+    TABLE<span>TAP</span>
+  </div>
+  <div class="nav-links">
+    <a href="?page=home" class="page-link" data-page="home">Home</a>
+    <a href="?page=features" class="page-link" data-page="features">Features</a>
+    <a href="?page=pricing" class="page-link" data-page="pricing">Pricing</a>
+    <a href="?page=demo" class="demo-btn page-link" data-page="demo">Request demo</a>
+  </div>
+</div>
+
+<!-- ========== PAGE CONTENT ========== -->
+<div id="page-content" class="container"></div>
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  <i class="fas fa-copyright"></i> Table Tap · Smart QR ordering · 
+  <span style="font-weight:600;">No hidden fees · cancel anytime</span><br>
+  <span style="display:inline-block; margin-top:0.8rem;"><i class="fab fa-firebase"></i> Firebase connected · leads to ServeProAdmin</span>
+</div>
+
+<!-- ========== FIREBASE (load first, then routing) ========== -->
+<script type="module">
+  // ---------- Firebase init (your config) ----------
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+  import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC3X_V-d1Yk_jg7l9YODBIFFsVNNk663mk",
+    authDomain: "serveproadmin.firebaseapp.com",
+    projectId: "serveproadmin",
+    storageBucket: "serveproadmin.firebasestorage.app",
+    messagingSenderId: "489934156049",
+    appId: "1:489934156049:web:2a597f37eaff93177ddcb0",
+    measurementId: "G-LSKEDF8N2Z"
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+  console.log('🔥 Firebase ready (demo form with mobile)');
+
+  // Make db available globally
+  window.firebaseDb = db;
+
+  // ---------- SIMPLE ROUTING ----------
+  const contentDiv = document.getElementById('page-content');
+
+  function renderPage(page) {
+    let html = '';
+    if (page === 'pricing') {
+      html = pricingPage();
+    } else if (page === 'features') {
+      html = featuresPage();
+    } else if (page === 'demo') {
+      html = demoPage();
+    } else {
+      html = homePage();
+    }
+    contentDiv.innerHTML = html;
+
+    // Attach form handler ONLY on demo page
+    if (page === 'demo') {
+      setTimeout(() => {
+        attachDemoFormHandler();
+      }, 50);
+    }
+
+    // Highlight active link
+    document.querySelectorAll('.page-link').forEach(link => {
+      link.classList.remove('active-page');
+      if (link.dataset.page === page || (page === 'demo' && link.dataset.page === 'demo')) {
+        link.classList.add('active-page');
+      }
+    });
+  }
+
+  function getPageFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('page');
+  }
+
+  function navigateTo(page) {
+    const url = new URL(window.location);
+    url.searchParams.set('page', page);
+    window.history.pushState({}, '', url);
+    renderPage(page);
+  }
+
+  window.addEventListener('popstate', () => {
+    renderPage(getPageFromUrl());
+  });
+
+  document.querySelectorAll('.page-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const page = link.dataset.page;
+      navigateTo(page);
+    });
+  });
+
+  const initialPage = getPageFromUrl() || 'home';
+  renderPage(initialPage);
+
+  // ---------- PAGE TEMPLATES (with ₹ instead of ₮) ----------
+  function homePage() {
+    return `
+      <!-- HERO -->
+      <div style="text-align:center; margin-bottom:3.5rem;">
+        <div style="display:inline-block; background:#f0ebe4; padding:0.3rem 1.5rem; border-radius:40px; color:#5e4a34; font-weight:500; font-size:0.9rem; margin-bottom:1.2rem;"><i class="fas fa-qrcode"></i> trust · speed · simplicity</div>
+        <h1 style="font-size:3rem; font-weight:700; max-width:800px; margin:0 auto; color:#24242f;">Your café, now <span style="color:#b48c5c; background:#f1ebe4; padding:0 0.6rem;">effortlessly digital</span></h1>
+        <p style="font-size:1.3rem; color:#4e4e5e; max-width:680px; margin:1.5rem auto 2rem;">No clunky tablets. No staff typing orders. Just QR codes that bring your menu to life.</p>
+        <div style="display:flex; gap:1.2rem; justify-content:center;">
+          <a href="?page=demo" class="page-link demo-btn" data-page="demo" style="padding:0.8rem 2.4rem;">See live demo →</a>
+          <a href="?page=features" class="page-link" data-page="features" style="background:#fff; border:2px solid #b48c5c; color:#2b2b36; padding:0.8rem 2.4rem; border-radius:40px; font-weight:600;">Discover features</a>
+        </div>
+      </div>
+
+      <!-- DEEP FEATURE SECTIONS (customer interest) -->
+      <div style="margin:4rem 0 2rem;">
+        <!-- Feature 1: speed -->
+        <div class="feature-deep">
+          <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:center;">
+            <div style="flex:1.2; min-width:260px;">
+              <span class="feature-icon-large"><i class="fas fa-bolt"></i></span>
+              <h2 style="font-size:2rem; font-weight:600; margin:0.2rem 0 0.5rem;">From hungry to served in 3 taps</h2>
+              <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin:0.8rem 0 1.2rem;">
+                <span class="stat-badge"><i class="fas fa-stopwatch"></i> 12 sec average order</span>
+                <span class="stat-badge"><i class="fas fa-chart-line"></i> 40% faster table turnover</span>
+              </div>
+              <p style="font-size:1.1rem;">Customer scans the QR → menu loads instantly → they choose items, add notes, and send to kitchen. No app install, no waiting.</p>
+              <div class="quote">“Orders flow straight to the kitchen, queues disappeared.” — Café owner, UB</div>
+            </div>
+            <div style="flex:0.9; background:#f1ece5; border-radius:3rem; padding:2rem; text-align:center;">
+              <i class="fas fa-qrcode" style="font-size:5rem; color:#2b2b36;"></i>
+              <p style="background:white; padding:0.8rem; border-radius:60px; margin-top:1rem;">scan · order · done</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 2: staff -->
+        <div class="feature-deep" style="background:#fbf9f7;">
+          <div style="display:flex; flex-wrap:wrap-reverse; gap:2rem; align-items:center;">
+            <div style="flex:0.8; background:#e4dbd1; border-radius:3rem; padding:2rem; text-align:center;">
+              <i class="fas fa-users" style="font-size:4rem; color:#5e4a34;"></i>
+              <p style="background:white; border-radius:40px; padding:0.6rem;">waiters focus on hospitality</p>
+            </div>
+            <div style="flex:1.2; min-width:260px;">
+              <span class="feature-icon-large"><i class="fas fa-hand-peace"></i></span>
+              <h2 style="font-size:2rem; font-weight:600;">Let staff do what they do best — smile</h2>
+              <p style="font-size:1.1rem;">No more shouting orders. Servers see orders on dashboard, deliver food, clear tables. Reduce need for extra hands.</p>
+              <ul style="list-style:none; margin-top:1.5rem;">
+                <li style="margin-bottom:0.8rem;"><i class="fas fa-check-circle" style="color:#2c6e49;"></i> <strong>Less training</strong> – new staff learn in 10 minutes</li>
+                <li style="margin-bottom:0.8rem;"><i class="fas fa-check-circle" style="color:#2c6e49;"></i> <strong>No missed orders</strong> – digital tickets</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 3: customer delight -->
+        <div class="feature-deep">
+          <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:center;">
+            <div style="flex:1.2;">
+              <span class="feature-icon-large"><i class="fas fa-face-smile-wink"></i></span>
+              <h2 style="font-size:2rem; font-weight:600;">Guests feel like VIPs</h2>
+              <p>Browse high-res photos, see specials, modify, pay from phone. No waving to get attention. 87% of customers would return for QR experience.</p>
+            </div>
+            <div style="flex:0.9; background:#f3ede7; border-radius:3rem; padding:1.5rem;">
+              <i class="fas fa-mobile-alt" style="font-size:4rem; color:#6b4f33;"></i>
+              <p>menu with photos · dietary icons · reorder in 1 tap</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 4: easy setup -->
+        <div class="feature-deep" style="background:#f9f5f0;">
+          <div style="display:flex; flex-wrap:wrap-reverse; gap:2rem;">
+            <div style="flex:1; background:#dad0c4; border-radius:3rem; padding:2rem; text-align:center;">
+              <i class="fas fa-cloud-upload-alt" style="font-size:4rem;"></i>
+              <p>update menu in real time</p>
+            </div>
+            <div style="flex:1.5;">
+              <span class="feature-icon-large"><i class="fas fa-leaf"></i></span>
+              <h2 style="font-size:2rem; font-weight:600;">Set up before your morning coffee</h2>
+              <p>Print QR codes, stick on tables, log in. That's it. Change prices, add photos, mark sold out in seconds.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin:4rem auto; text-align:center;">
+          <p style="font-size:1.2rem;"><a href="?page=features" class="page-link" data-page="features" style="color:#b48c5c; font-weight:600;">Explore all features →</a></p>
+        </div>
+      </div>
+    `;
+  }
+
+  function featuresPage() {
+    return `
+      <h1 style="font-size:2.6rem; font-weight:600; margin-bottom:1rem;">Everything you need</h1>
+      <div class="grid-2col" style="margin:3rem 0;">
+        <div class="feature-deep"><i class="fas fa-tachometer-alt" style="font-size:2rem; color:#b48c5c;"></i> <h3>Real‑time dashboard</h3> <p>See orders, table status, revenue in one glance.</p></div>
+        <div class="feature-deep"><i class="fas fa-print"></i> <h3>Kitchen printer ready</h3> <p>Orders auto‑print with modifiers.</p></div>
+        <div class="feature-deep"><i class="fas fa-paint-brush"></i> <h3>Customise menu look</h3> <p>Upload logo, set categories, show specials.</p></div>
+        <div class="feature-deep"><i class="fas fa-credit-card"></i> <h3>Multiple payments</h3> <p>Card, mobile wallet, or cash.</p></div>
+        <div class="feature-deep"><i class="fas fa-chart-pie"></i> <h3>Smart insights</h3> <p>Bestsellers, average order, peak hours.</p></div>
+        <div class="feature-deep"><i class="fas fa-language"></i> <h3>Multi‑language menu</h3> <p>Switch languages for tourists.</p></div>
+      </div>
+    `;
+  }
+
+  function pricingPage() {
+    return `
+      <h1 style="font-size:2.6rem; font-weight:600; margin-bottom:2rem;">Simple pricing</h1>
+      <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:center; margin:2rem 0 4rem;">
+        <!-- base 999/month with ₹ -->
+        <div class="price-card">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:1.2rem;"><i class="fas fa-crown" style="color:#b48c5c; font-size:1.8rem;"></i><span style="background:#f2ede7; padding:0.2rem 1rem; border-radius:40px;">STARTER</span></div>
+          <div style="font-size:2.8rem; font-weight:700;">₹999<span style="font-size:1rem; font-weight:400; color:#6f6f82; margin-left:8px;">/ month</span></div>
+          <ul style="list-style:none; padding:1.8rem 0 1.2rem;">
+            <li style="margin-bottom:1rem;"><i class="fas fa-check-circle" style="color:#2c6e49;"></i> Software Access + dashboard</li>
+            <li style="margin-bottom:1rem;"><i class="fas fa-check-circle" style="color:#2c6e49;"></i> Installation & Setup</li>
+            <li style="margin-bottom:1rem;"><i class="fas fa-check-circle" style="color:#2c6e49;"></i> QR Code Ordering System</li>
+          </ul>
+          <div style="border-top:2px dashed #dad3cb; margin:0.5rem 0 1.2rem;"></div>
+          <div style="font-size:1.5rem; font-weight:600;">3 tables</div>
+        </div>
+        <!-- upgrade 399 one-time with ₹ -->
+        <div class="price-card" style="box-shadow:0 25px 40px -10px rgba(87,67,45,0.15), 0 0 0 2px #b48c5c inset; position:relative;">
+          <div style="position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:#b48c5c; color:white; font-weight:700; padding:0.2rem 1.6rem; border-radius:40px;">POPULAR</div>
+          <div style="margin-top:1.2rem; display:flex; align-items:center; gap:8px;"><i class="fas fa-chart-line" style="color:#b48c5c; font-size:1.8rem;"></i><span style="background:#f2ede7; padding:0.2rem 1rem; border-radius:40px;">EXPAND</span></div>
+          <div style="font-size:2.4rem; font-weight:700;">₹399 <span style="font-size:1rem; font-weight:400;">one‑time</span></div>
+          <p><i class="fas fa-arrow-up" style="color:#2c6e49;"></i> Upgrade to 10 tables total</p>
+          <ul style="list-style:none; padding:0.8rem 0;">
+            <li><i class="fas fa-check-circle" style="color:#2c6e49;"></i> Lifetime table expansion</li>
+            <li><i class="fas fa-check-circle" style="color:#2c6e49;"></i> No extra monthly charge</li>
+          </ul>
+          <div style="border-top:2px dashed #dad3cb; margin:1rem 0 1.5rem;"></div>
+          <div><span style="font-weight:600;">10 tables lifetime</span></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function demoPage() {
+    return `
+      <div class="form-card">
+        <h1 style="font-size:2.4rem; font-weight:600; margin-bottom:0.5rem;">See Table Tap live</h1>
+        <p style="font-size:1.2rem; color:#4e4e5e; margin-bottom:2rem;">We’ll prepare a personal demo with your café name and menu preview. No obligations.</p>
+        
+        <form id="demoForm">
+          <input type="text" id="demoName" placeholder="Your full name *" required>
+          <!-- Replaced email with mobile number field -->
+          <input type="tel" id="demoMobile" placeholder="Mobile number (with country code) *" required pattern="[0-9+\-\s]+" title="Please enter a valid mobile number">
+          <div class="input-hint">e.g. +91 98765 43210</div>
+          <input type="text" id="demoCafe" placeholder="Café name (optional)">
+          <button type="submit" id="demoSubmitBtn">Request demo <i class="fas fa-arrow-right"></i></button>
+        </form>
+        
+        <div id="formFeedback" class="feedback"></div>
+        <p style="font-size:0.8rem; color:#8a8a9a; margin-top:1.5rem;"><i class="fas fa-shield-alt"></i> We'll only use your info to contact you about Table Tap.</p>
+      </div>
+    `;
+  }
+
+  // ---------- FORM HANDLER (mobile instead of email) ----------
+  function attachDemoFormHandler() {
+    const form = document.getElementById('demoForm');
+    const feedback = document.getElementById('formFeedback');
+    
+    if (!form) {
+      console.warn('Demo form not found');
+      return;
+    }
+
+    const newForm = form.cloneNode(true);
+    form.parentNode.replaceChild(newForm, form);
+    
+    const nameInput = document.getElementById('demoName');
+    const mobileInput = document.getElementById('demoMobile');  // changed from email
+    const cafeInput = document.getElementById('demoCafe');
+    const feedbackDiv = document.getElementById('formFeedback');
+    const submitBtn = newForm.querySelector('button[type="submit"]');
+
+    if (!nameInput || !mobileInput || !feedbackDiv) {
+      console.error('Form elements missing');
+      return;
+    }
+
+    newForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = nameInput.value.trim();
+      const mobile = mobileInput.value.trim();  // now using mobile
+      const cafe = cafeInput ? cafeInput.value.trim() : 'not provided';
+      
+      if (!name || !mobile) {
+        feedbackDiv.style.color = '#b34a4a';
+        feedbackDiv.innerText = '❌ Name and mobile number are required.';
+        return;
+      }
+      
+      // Simple mobile validation (at least 5 digits after removing non-digits)
+      const digitsOnly = mobile.replace(/\D/g, '');
+      if (digitsOnly.length < 5) {
+        feedbackDiv.style.color = '#b34a4a';
+        feedbackDiv.innerText = '❌ Please enter a valid mobile number.';
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.7';
+      }
+
+      feedbackDiv.style.color = '#2c6e49';
+      feedbackDiv.innerText = '⏳ Sending request...';
+
+      try {
+        const db = window.firebaseDb;
+        if (!db) throw new Error('Firebase not initialized');
+        
+        // Store mobile instead of email
+        const docRef = await addDoc(collection(db, "demoRequests"), {
+          fullName: name,
+          mobile: mobile,           // mobile field
+          cafeName: cafe,
+          requestedAt: new Date().toISOString(),
+          source: "Table Tap demo page",
+          status: "new"
+        });
+        
+        console.log('✅ Lead saved with ID:', docRef.id);
+        feedbackDiv.style.color = '#2c6e49';
+        feedbackDiv.innerText = `✅ Thank you! We'll reach out soon (ref: ${docRef.id.slice(0,6)}).`;
+        
+        nameInput.value = '';
+        mobileInput.value = '';
+        if (cafeInput) cafeInput.value = '';
+        
+      } catch (error) {
+        console.error('🔥 Firebase error:', error);
+        feedbackDiv.style.color = '#b34a4a';
+        feedbackDiv.innerText = '⚠️ Something went wrong. Please try again.';
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+        }
+      }
+    });
+
+    console.log('✅ Demo form with mobile attached');
+  }
+</script>
+<noscript>Please enable JavaScript for full functionality.</noscript>
+</body>
+</html>
